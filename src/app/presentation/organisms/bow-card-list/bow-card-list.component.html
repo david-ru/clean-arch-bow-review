@@ -1,0 +1,189 @@
+
+<div *ngIf="bows">
+	<table mat-table matSort
+				[dataSource]="dataSource" multiTemplateDataRows
+				class="mat-elevation-z8">
+				
+		<!-- Company Column -->
+		<ng-container matColumnDef="company">
+			<th mat-header-cell *matHeaderCellDef mat-sort-header> Company </th>
+			<td mat-cell *matCellDef="let element"> {{element?.informationFromManufacturer?.company | firstcase}} </td>
+		</ng-container>
+	
+		<!-- Name Column -->
+		<ng-container matColumnDef="name">
+			<th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+			<td mat-cell *matCellDef="let element"> {{element?.informationFromManufacturer?.name | firstcase}} </td>
+		</ng-container>
+
+		<!-- Design Column -->
+		<ng-container matColumnDef="design">
+			<th mat-header-cell *matHeaderCellDef mat-sort-header> Design </th>
+			<td mat-cell *matCellDef="let element"> {{element?.informationFromManufacturer?.design | firstcase}} </td>
+		</ng-container>
+	
+		<!-- Draw Weight Column -->
+		<ng-container matColumnDef="drawWeight">
+			<th mat-header-cell *matHeaderCellDef mat-sort-header> Draw Weight </th>
+			<td mat-cell *matCellDef="let element"> #{{element?.informationFromManufacturer?.drawWeight}}@{{element?.informationFromManufacturer?.drawWeightLength}} </td>
+		</ng-container>
+	
+		<!-- Points Column -->
+		<ng-container matColumnDef="points">
+			<th mat-header-cell *matHeaderCellDef mat-sort-header> Total Points </th>
+			<td mat-cell *matCellDef="let element"> {{element?.points}} </td>
+		</ng-container>
+	
+		<!-- Price/Value Column -->
+		<ng-container matColumnDef="priceValue">
+			<th mat-header-cell *matHeaderCellDef mat-sort-header> Price/Value </th>
+			<td mat-cell *matCellDef="let element"> {{element?.priceValue}} </td>
+		</ng-container>
+
+		<!-- Price Column -->
+		<ng-container matColumnDef="price">
+			<th mat-header-cell *matHeaderCellDef mat-sort-header> Price </th>
+			<td mat-cell *matCellDef="let element"> {{element?.informationFromManufacturer?.price | currency:element?.informationFromManufacturer?.currency:'symbol'}} </td>
+		</ng-container>
+
+		<!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+		<ng-container matColumnDef="expandedDetail">
+			<td mat-cell *matCellDef="let element" [attr.colspan]="columnNames?.length">
+				<div class="element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+					<div class="element-diagram">
+						<img [src]="element?.picture">
+					</div>
+					<div class="element-description">
+						<div>
+							<span class="element-description__title"> Shipping costs: </span>
+							<span class="element-description__value"> {{element?.informationFromManufacturer?.shipping || 'N/A'}} </span>
+							<span class="element-description__title"> Bow style:	</span>
+							<span class="element-description__value"> {{element?.informationFromManufacturer?.style | firstcase}} </span>
+							<span class="element-description__title"> String material:	</span>
+							<span class="element-description__value"> {{element?.informationFromManufacturer?.stringMaterials || 'N/A' | firstcase}} </span>
+							<span class="element-description__title"> Bow materials:	</span>
+							<span class="element-description__value">
+								<span *ngFor="let material of element?.informationFromManufacturer?.bowMaterials; first as isFirst; last as isLast">
+									<span *ngIf="isFirst">{{material | firstcase}}</span>
+									<span *ngIf="!isFirst">{{material}}</span>
+									<span *ngIf="!isLast">, </span>
+								</span>
+							</span>
+						</div>
+						<div class="element-description__measurements">
+							<div class="element-description__measurements__title">Measurements</div>
+							<mat-divider></mat-divider>
+							<div class="element-description__measurements__list">
+								<span class="element-description__measurement">
+									<span class="element-description__title">Length strung: </span>
+									<span class="element-description__value">
+										<span>{{element?.informationFromManufacturer?.lengthStrung}}</span>
+										<span *ngIf="element?.informationFromManufacturer?.lengthStrung">''</span>
+										<span *ngIf="!element?.informationFromManufacturer?.lengthStrung">N/A</span>
+									</span>
+								</span>
+
+								<span class="element-description__measurement">
+									<span class="element-description__title"> Max. draw length:	</span>
+									<span class="element-description__value">
+										<span> {{element?.informationFromManufacturer?.maxDraw}}</span>
+										<span *ngIf="element?.informationFromManufacturer?.maxDraw">''</span>
+										<span *ngIf="!element?.informationFromManufacturer?.maxDraw">N/A</span>
+									</span>
+								</span>
+
+								<span class="element-description__measurement">
+									<span class="element-description__title"> Length nock to nock:	</span>
+									<span class="element-description__value">
+										<span> {{element?.checkedMeasurements?.bowLengthNockToNock}}</span>
+										<span *ngIf="element?.checkedMeasurements?.bowLengthNockToNock">''</span>
+										<span *ngIf="!element?.checkedMeasurements?.bowLengthNockToNock">N/A</span>
+									</span>
+								</span>
+
+								<span class="element-description__measurement">
+									<span class="element-description__title"> Arrowpass width:	</span>
+									<span class="element-description__value">
+										<span> {{element?.checkedMeasurements?.arrowPassWidth}}</span>
+										<span *ngIf="element?.checkedMeasurements?.arrowPassWidth">mm</span>
+										<span *ngIf="!element?.checkedMeasurements?.arrowPassWidth">N/A</span>
+									</span>
+								</span>
+
+								<span class="element-description__measurement">
+									<span class="element-description__title">Bow weight:	</span>
+									<span class="element-description__value">
+										<span>{{element?.checkedMeasurements?.bowWeight}}</span>
+										<span *ngIf="element?.checkedMeasurements?.bowWeight">gr</span>
+										<span *ngIf="!element?.checkedMeasurements?.bowWeight">N/A</span>
+									</span>
+								</span>
+
+								<span class="element-description__measurement">
+									<span class="element-description__title">Draw weight at 28'':	</span>
+									<span class="element-description__value">
+										<span *ngIf="element?.checkedMeasurements?.drawWeight28">#</span>
+										<span> {{element?.checkedMeasurements?.drawWeight28}}</span>
+										<span *ngIf="!element?.checkedMeasurements?.drawWeight28">N/A</span>
+									</span>
+								</span>
+
+								<span class="element-description__measurement">
+									<span class="element-description__title">Measured draw weight:	</span>
+									<span class="element-description__value">
+										<span *ngIf="element?.checkedMeasurements?.realBowDrawWeight">#</span>
+										<span>{{element?.checkedMeasurements?.realBowDrawWeight}}@{{element?.informationFromManufacturer?.drawWeightLength}}</span>
+										<span *ngIf="!element?.checkedMeasurements?.realBowDrawWeight">N/A</span>
+									</span>
+								</span>
+
+								<span class="element-description__measurement">
+									<span class="element-description__title">F value:	</span>
+									<span class="element-description__value">
+										<span>{{element?.checkedMeasurements?.fValue}}</span>
+										<span *ngIf="!element?.checkedMeasurements?.fValue">N/A</span>
+									</span>
+								</span>
+
+								<span class="element-description__measurement">
+									<span class="element-description__title">Angle of 60 degress at:	</span>
+									<span class="element-description__value">
+										<span> {{element?.checkedMeasurements?.stringAngleOf60DegreesAt}}</span>
+										<span *ngIf="element?.checkedMeasurements?.stringAngleOf60DegreesAt">''</span>
+										<span *ngIf="!element?.checkedMeasurements?.stringAngleOf60DegreesAt">N/A</span>
+									</span>
+								</span>
+
+								<span class="element-description__measurement">
+									<span class="element-description__title"> Speed:	</span>
+									<span *ngIf="element?.checkedMeasurements?.speed">
+										<span *ngFor="let speed of element?.checkedMeasurements?.speed; i as index; last as isLast">
+											<span class="element-description__value">
+												<span>{{speed.gpp}}gpp @ {{speed.fps}}fps</span>
+												<span *ngIf="!isLast">, </span>
+											</span>		
+										</span>
+									</span>
+									<span *ngIf="!element?.checkedMeasurements?.speed">N/A </span>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</td>
+		</ng-container>
+
+		<tr mat-header-row *matHeaderRowDef="columnNames"></tr>
+		<tr mat-row *matRowDef="let element; columns: columnNames;"
+				class="element-row"
+				[class.expanded-row]="expandedElement === element"
+				(click)="onRowClick(element)">
+		</tr>
+		<tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+
+		<!-- Row shown when there is no matching data. -->
+		<tr class="mat-row" *matNoDataRow>
+			<td class="mat-cell" colspan="4">No data matching the filter "{{filterValue}}"</td>
+		</tr>
+	</table>
+</div>

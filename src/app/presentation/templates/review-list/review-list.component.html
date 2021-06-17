@@ -1,0 +1,8 @@
+<div class="content">
+  <div class="actions-row">
+    <app-filter (keyReleased)="applyFilter($event)"></app-filter>
+  </div>
+  <div>
+    <cab-or-bow-card-list [filterValue]="filterValue"></cab-or-bow-card-list>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+:host {
+  .sections {
+    display: flex;
+    flex-direction: row;
+  
+    .section {
+      height: 1em;
+    }
+  }
+  
+  .mask {
+    background-color: #ffffff;
+    height: 1em;
+    position: relative;
+    top: -1em;
+    right: 0;
+    float: right;
+    -webkit-box-shadow: inset -4px 3px 31px -9px lightgrey;
+    -moz-box-shadow: inset -4px 3px 31px -9px lightgrey;
+    box-shadow: inset -4px 3px 31px -9px lightgrey;
+  }
+}

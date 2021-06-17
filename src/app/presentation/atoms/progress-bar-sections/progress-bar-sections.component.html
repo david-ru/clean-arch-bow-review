@@ -1,0 +1,6 @@
+<div class="sections">
+  <div *ngFor="let section of sections" class="section" [style.background-color]="section" [style.width.%]="100/sections.length">
+  </div>
+</div>
+<div class="mask" [style.width.%]="remaining">
+</div>
